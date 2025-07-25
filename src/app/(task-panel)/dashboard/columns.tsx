@@ -1,5 +1,6 @@
 "use client"
 
+import { Checkbox } from "@/components/ui/checkbox"
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
 import {  Square, SquareCheck } from "lucide-react"
@@ -16,24 +17,24 @@ export type User = {
 
 export const colums: ColumnDef<User>[] = [
     {
-       accessorKey:'check',
-       header: () => <Square size={18} className="text-muted-foreground"/>,
-       cell: ({row}) => {
-        const [checked, setChecked] = useState<boolean>(false)
-        return (
-            <button
-             onClick={() => setChecked(!checked)}
-             className="cursor-pointer"
-            >
-                {
-                    checked ? 
-                    <SquareCheck className="text-green-400" size={18}/>
-                     : 
-                     <Square className="text-muted-foreground" size={18}/>
-                }
-            </button>
-        )
-       }
+       accessorKey: 'select',
+       header: ({ table }) => (
+         <Checkbox
+         checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+         }
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+         />
+    ),
+      cell: ({ row }) => (
+         <Checkbox
+         checked={row.getIsSelected()}
+         onCheckedChange={(value) => row.toggleSelected(!!value)}
+         aria-label="Select row"
+         />
+      )
     },
     {
        accessorKey:'title',

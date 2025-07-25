@@ -7,12 +7,21 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useTaskStore } from '../../store/task-store'
+import { useEffect } from 'react'
 
 interface FilterProps {
     table: any
 }
 
 const Filter = ({table}:FilterProps ) => {
+
+  const { tasks, getTasks} =useTaskStore()
+  useEffect(() => {
+    getTasks()
+  })
+  getTasks()
+  console.log(tasks)
   return (
     <div className='flex items-center mt-5 mb-3 justify-between'>
            <span className='flex'>
@@ -64,12 +73,25 @@ const Filter = ({table}:FilterProps ) => {
                     </Button>
                     </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-36">
-                    <DropdownMenuCheckboxItem>Status</DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>Title</DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>Description</DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>Priority</DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>CreatedAt</DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>UpdatedAt</DropdownMenuCheckboxItem>
+                    {table
+                    .getAllColumns()
+                    .filter(
+                        (column: any | unknown) => column.getCanHide()
+                    )
+                    .map((column: any | unknown) => {
+                        return (
+                        <DropdownMenuCheckboxItem
+                            key={column.id}
+                            className="capitalize"
+                            checked={column.getIsVisible()}
+                            onCheckedChange={(value) =>
+                            column.toggleVisibility(!!value)
+                            }
+                        >
+                            {column.id}
+                  </DropdownMenuCheckboxItem>
+                )
+              })}
                 </DropdownMenuContent>
             </DropdownMenu>
              

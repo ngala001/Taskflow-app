@@ -4,6 +4,7 @@ import React from 'react'
 import { User, colums } from './columns'
 
 
+
 async function getUsers(): Promise<User[]> {
   const res = await fetch("https://68825dce66a7eb81224e5d43.mockapi.io/api/users/tasks")
     
@@ -11,6 +12,9 @@ async function getUsers(): Promise<User[]> {
   const data = await res.json()
   return data
 }
+
+
+
 
 const page = async() => {
   const data = await getUsers()
