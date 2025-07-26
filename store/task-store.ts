@@ -1,12 +1,6 @@
+import { Task } from "@/app/(task-panel)/dashboard/columns"
 import { create } from "zustand"
 
-export type Task = {
- title: string
- description: string
- status: string
- createdAt: string
- updatedAt: string
-}
 
 interface UseTaskStoreProps {
     tasks: Task[],
@@ -18,8 +12,8 @@ interface UseTaskStoreProps {
 export const useTaskStore = create<UseTaskStoreProps>((set, get) =>({
     tasks: [],
     getTasks: async() => {
-        const todos = await fetch("https://68825dce66a7eb81224e5d43.mockapi.io/api/users/tasks")
-        const data = await todos.json()
+        const res = await fetch("http://192.168.100.5:3000/api/tasks")
+        const data = await res.json()
         set({tasks: data})
     },
     filterStatus: () => {},

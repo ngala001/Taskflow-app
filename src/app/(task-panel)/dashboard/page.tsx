@@ -1,27 +1,32 @@
-
+"use client"
 import DataTable from '@/components/TaskTable'
-import React from 'react'
-import { User, colums } from './columns'
+import  { useEffect } from 'react'
+import { Task, columns } from './columns'
+import { useTaskStore } from '../../../../store/task-store'
 
 
 
-async function getUsers(): Promise<User[]> {
-  const res = await fetch("https://68825dce66a7eb81224e5d43.mockapi.io/api/users/tasks")
+
+
+const page = () => {
+
+  const { tasks , getTasks } = useTaskStore()
+
+  const data: Task[] = tasks
+
+  useEffect(() => {
+    const load = async() => {
+      getTasks()
+
+    }
+    load()
     
-  //https://68825dce66a7eb81224e5d43.mockapi.io/api/users/users
-  const data = await res.json()
-  return data
-}
+  },[])
 
-
-
-
-const page = async() => {
-  const data = await getUsers()
   return (
     <section className='w-full px-4'>
       <div className='container mx-auto'>
-        <DataTable columns={colums} data={data}/>
+        <DataTable columns={columns} data={data}/>
     </div>
     </section>
   )

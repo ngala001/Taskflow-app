@@ -21,9 +21,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "./ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, RefreshCw, SplineIcon } from "lucide-react"
 import Filter from '@/components/Filter'
 import { useState } from "react"
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -52,9 +53,9 @@ export default function DataTable<TData, TValue>({
     }
   })
 
-  const tasks = table.getRowModel().rows.length
   
 
+  
   return (
     <section>
       <Filter table ={table}/>
@@ -95,7 +96,9 @@ export default function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                  <Button variant={"ghost"}>
+                     No results.
+                  </Button>
                 </TableCell>
               </TableRow>
             )}

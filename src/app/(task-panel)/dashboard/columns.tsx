@@ -3,19 +3,24 @@
 import { Checkbox } from "@/components/ui/checkbox"
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
-import {  Square, SquareCheck } from "lucide-react"
-import { useState } from "react"
-export type User = {
+
+enum Status {
+   open,
+   pending,
+   resolved
+}
+
+export type Task = {
     id: string
     title: string
-    status: string
+    status: Status
     description: string
-    createdAt: string
-    updatedAt: string
+    created_at: string
+    updated_at: string
     priority: string
 }
 
-export const colums: ColumnDef<User>[] = [
+export const columns: ColumnDef<Task>[] = [
     {
        accessorKey: 'select',
        header: ({ table }) => (
@@ -48,15 +53,25 @@ export const colums: ColumnDef<User>[] = [
        accessorKey:'status',
        header: () => <span>Status</span>,
        cell: ({ row }) => {
-        const statusInfo = row.getValue('status')
+        const status = row.getValue('status') as string;
+         let bg;
+         let label;
+         switch(status) {
+            case "open":
+               bg = "bg-red-500"
+               label= "Open"
+               break;
+            case "pending":
+               bg = "bg-sky-500"
+               label= "Pending"
+               break;
+            default:
+               bg = "bg-green-600"
+               label = "Resolved"
+         }
          return (
-            <span>
-               {
-                  statusInfo === true ? 
-                  <span className="bg-red-500 px-2 py-1 rounded text-white">Open</span> 
-                  : 
-                  <span className="bg-sky-500 px-2 py-1 rounded">Pending</span> 
-               }
+            <span className={`${bg} px-2 py-1 rounded text-white text-xs font-medium `}>
+               {label}
             </span>
          )
        }
@@ -66,20 +81,20 @@ export const colums: ColumnDef<User>[] = [
        header: () => <span>Priority</span>,
     },
     {
-       accessorKey:'createdAt',
+       accessorKey:'created_at',
        header: () => <span>Created_At</span>,
         cell: ({ row }) => {
-        const date = new Date(row.getValue("createdAt"))
+        const date = new Date(row.getValue("created_at"))
         const formated = format(date, "yyy-MM-dd")
         return <span>{formated}</span>
 
        }
     },
     {
-       accessorKey:'updatedAt',
+       accessorKey:'updated_at',
        header: () => <span>Updated_At</span>,
         cell: ({ row }) => {
-        const date = new Date(row.getValue("updatedAt"))
+        const date = new Date(row.getValue("updated_at"))
         const formated = format(date, "yyy-MM-dd")
         return <span>{formated}</span>
 

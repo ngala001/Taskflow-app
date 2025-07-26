@@ -7,8 +7,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useTaskStore } from '../../store/task-store'
-import { useEffect } from 'react'
 
 interface FilterProps {
     table: any
@@ -16,12 +14,6 @@ interface FilterProps {
 
 const Filter = ({table}:FilterProps ) => {
 
-  const { tasks, getTasks} =useTaskStore()
-  useEffect(() => {
-    getTasks()
-  })
-  getTasks()
-  console.log(tasks)
   return (
     <div className='flex items-center mt-5 mb-3 justify-between'>
            <span className='flex'>
